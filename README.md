@@ -1,3 +1,9 @@
+Hi! I'm DML_142, and this is my portfolio site made with [Next.js](https://nextjs.org)
+
+In general, I made some things with Gemini And Claude AI's help, but that doese't mean I did EVERYTHING with AI. AI's job was just to make some easy things like wrapper. Also I personally know how to use every tool i have in this project.
+
+## Next default text goes next 
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
