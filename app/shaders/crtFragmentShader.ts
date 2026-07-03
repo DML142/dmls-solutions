@@ -24,7 +24,10 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     vec2 outsideAmount = max(-distortedUv, distortedUv - 1.0);
     float outsideDist = max(outsideAmount.x, outsideAmount.y);
     if (outsideDist > 0.0) {
-        float borderBlend = clamp(outsideDist / 0.16, 0.0, 1.0);
+        // outsideDist only ever reaches ~0.04 at the very corners (uv stays
+        // in [0,1]), so the falloff distance must be small or the blend
+        // never finishes and leaves a visible gray seam at the canvas edge.
+        float borderBlend = clamp(outsideDist / 0.022, 0.0, 1.0);
         outputColor = vec4(mix(vec3(0.014, 0.017, 0.014), vec3(0.0), borderBlend), 1.0);
         return;
     }

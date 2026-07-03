@@ -23,7 +23,7 @@ A personal portfolio site built as a single-page scroll experience, divided into
 ### 3.1 Home / Hero
 - Elegant, minimal **vector graphics** style.
 - Black stars that follow the cursor (interactive particle/vector field).
-- Status: **in progress** (`Hero.tsx`).
+- Status: **done** (`Hero.tsx`).
 
 ### 3.2 About Me
 - **Old retro CRT monitor** aesthetic — green-on-black, pixelated screen.
@@ -40,7 +40,8 @@ A personal portfolio site built as a single-page scroll experience, divided into
   2. NestJS
   3. Others (GSAP, Three.js, R3F)
 - 3D icons animate in response to scroll position (scroll-linked animation, likely GSAP ScrollTrigger driving r3f object transforms).
-- Status: **not started**.
+- **3D logo assets ready**: Next.js, NestJS, and Three.js marks modeled/solidified in Blender, exported as glTF, optimized with `@gltf-transform/cli` (nextjs.glb: 15.4KB→8.9KB, ~188 tris; nestjs.glb: 59.5KB→28.2KB, ~846 tris; threejs.glb: 49.2KB→48.7KB, ~1064 tris), and converted to typed R3F components with `gltfjsx` — `public/models/{nextjs,nestjs,threejs}.glb`, `app/components/skills/models/{NextLogo,NestLogo,ThreeLogo}.tsx`. Scene composition (camera framing, materials/lighting, scroll-linked animation) not yet built.
+- Status: **not started** (assets ready).
 
 ### 3.4 Contact
 - Full 3D scene: an **animated black hole**.
@@ -72,4 +73,5 @@ These weren't specified and should be resolved before/while building the later s
 ## 6. Status Snapshot (as of 2026-07-02)
 
 - `Hero.tsx`, `About.tsx`, `Navbar.tsx`, `WaveButton.tsx` exist and are under active edit.
+- `Hero.tsx` done for now and don't need any updateds, except then asked to edit it.
 - Skills and Contact sections not yet started.
