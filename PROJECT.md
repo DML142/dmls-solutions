@@ -27,9 +27,11 @@ A personal portfolio site built as a single-page scroll experience, divided into
 
 ### 3.2 About Me
 - **Old retro CRT monitor** aesthetic — green-on-black, pixelated screen.
-- Requires a **CRT/monitor shader** (barrel distortion, scanlines, glow) to sell the "real old monitor" look — implemented as a shader pass (r3f `shaderMaterial` / custom GLSL), not just CSS filters.
-- The **navbar must also be rendered inside the CRT deform** — i.e., the navbar is part of the distorted "screen" content, not a normal fixed-position DOM element outside the effect.
-- Status: **in progress** (`About.tsx`, `Navbar.tsx`).
+- **CRT shader** (postprocessing `Effect`): subtle barrel distortion of screen content, scanlines, phosphor tint, vignette, and a retrace band that periodically sweeps top-to-bottom.
+- **Monitor bezel** is DOM/Tailwind (gray gradients + inset/outset shadows for a 3D plastic look) so the borders stay undistorted; only the WebGL screen content is warped.
+- **Navigation (decided)**: the global DOM navbar **slides up and hides** when the About section is active (reverses on scroll back). In-section navigation is a **menu bar rendered inside the CRT scene** (HOME / ABOUT / SKILLS / CONTACT) — hover fills each button green left-to-right with black text, click scrolls to the section.
+- Content: bio text in a bordered terminal box; scene tilts toward the pointer (like the hero text parallax); works on touch.
+- Status: **in progress** (`About.tsx`, `about/CRTScene.tsx`, `about/CRTMenu.tsx`, `about/BioTerminal.tsx`, `shaders/crtFragmentShader.ts`, `effects/CRTEffect.ts`).
 
 ### 3.3 Skills
 - Background featuring Next.js and NestJS branding/motifs.

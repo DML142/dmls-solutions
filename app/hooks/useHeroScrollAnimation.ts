@@ -60,7 +60,9 @@ export function useHeroScrollAnimation({
         },
       });
 
-      // Past that point, the About monitor slides up from under the hero.
+      // Past that point, the About monitor slides up from under the hero
+      // and the global navbar tucks away above the viewport (the CRT scene
+      // has its own in-screen menu); scrolling back reverses both.
       gsap
         .timeline({
           scrollTrigger: {
@@ -73,7 +75,8 @@ export function useHeroScrollAnimation({
           aboutRef.current,
           { yPercent: 0 },
           { yPercent: -100, duration: 0.7, ease: "power2.inOut" }
-        );
+        )
+        .to(".site-navbar", { yPercent: -100, duration: 0.5, ease: "power2.inOut" }, 0);
     });
 
     return () => ctx.revert();

@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
 
 export default function NavBar() {
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white backdrop-blur-md border-b border-black/10">
+    <nav className="site-navbar fixed top-0 left-0 w-full z-50 bg-white backdrop-blur-md border-b border-black/10">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between text-sm">
 
         <div className="text-black font-bold text-lg tracking-tight select-none">
