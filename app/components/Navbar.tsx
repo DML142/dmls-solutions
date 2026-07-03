@@ -19,8 +19,9 @@ const navItems: NavItem[] = [
 
 export default function NavBar() {
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white backdrop-blur-md border-b border-black/10">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white backdrop-blur-md border-b border-black/10">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between text-sm">
+
         <div className="text-black font-bold text-lg tracking-tight select-none">
           DML
         </div>
@@ -33,17 +34,17 @@ export default function NavBar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="flex items-center gap-2 text-black/70 hover:text-black transition-colors duration-300 text-sm font-medium group"
+                className="flex items-center gap-2 text-black/70 hover:text-black text-sm font-medium group"
               >
-                <Icon className="flex items-center justify-center w-4 h-4 group-hover:h-4.5 group-hover:w-4.5 text-black/40 group-hover:text-black/80 transition-all duration-300" />
+                <Icon className="w-4 h-4 text-current opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                 <span>{item.name}</span>
               </Link>
-            )})
-          }
+            )
+          })}
         </nav>
 
         <WaveButton />
       </div>
-    </header>
+    </nav>
   )
 }

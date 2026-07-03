@@ -1,28 +1,53 @@
+"use client";
 import { forwardRef } from "react";
-// Импорт шрифтов, если нужен текст, но для заглушки можно без них
+import { Canvas } from "@react-three/fiber";
+import { Text } from "@react-three/drei";
+import { EffectComposer } from "@react-three/postprocessing";
+import CRTPostEffect from "./CRTPostEffect";
 
-// Обертываем компонент в forwardRef
 const About = forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    // Привязываем переданный реф к самому внешнему div
-    // top-[100%] прячет её под экран, z-30 кладет поверх героя
-    <div 
-      ref={ref} 
-      className="fixed top-full left-0 w-full h-screen bg-black z-30 flex flex-col items-center justify-center select-none text-white font-mono opacity-0"
+    <div
+      ref={ref}
+      className="fixed top-full left-0 w-full h-screen bg-black z-30 select-none"
     >
-      <div className="max-w-xl text-center p-6 border border-zinc-800 bg-zinc-950/50">
-        <h2 className="text-xl uppercase tracking-widest mb-4 text-zinc-400">
-          &gt; About Me
-        </h2>
-        <p className="text-sm text-zinc-500 leading-relaxed">
-          [Черный экран-заглушка. Секция готова к наполнению кодом/контентом]
-        </p>
-      </div>
+      <Canvas
+        camera={{ position: [0, 0, 4], fov: 50 }}
+        gl={{ antialias: true }}
+      >
+        <color attach="background" args={["#000000"]} />
+
+        <Text
+          position={[0, 0.4, 0]}
+          fontSize={0.28}
+          color="#ffffff"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {"> About Me"}
+        </Text>
+
+        <Text
+          position={[0, -0.2, 0]}
+          fontSize={0.14}
+          color="#cccccc"
+          maxWidth={3.2}
+          textAlign="center"
+          lineHeight={1.4}
+          anchorX="center"
+          anchorY="middle"
+        >
+          [System initialized. Screen rendered through a WebGL context, isolated from global HTML filters.]
+        </Text>
+
+        <EffectComposer>
+          <CRTPostEffect />
+        </EffectComposer>
+      </Canvas>
     </div>
   );
 });
 
-// Задаем имя для отладки
 About.displayName = "AboutMeSection";
 
 export default About;

@@ -37,14 +37,13 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
       reverseAnimation();
     };
 
-    // Логика для десктопных ПК
     const handleMouseEnter = () => {
       if (!isTouch) playAnimation();
     };
 
     const handleMouseLeave = () => {
       if (!isTouch) reverseAnimation();
-      isTouch = false; 
+      isTouch = false;
     };
 
     btn.addEventListener("touchstart", handleTouchStart, { passive: true });
@@ -53,7 +52,7 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
 
     btn.addEventListener("mouseenter", handleMouseEnter);
     btn.addEventListener("mouseleave", handleMouseLeave);
-    
+
     return () => {
       btn.removeEventListener("touchstart", handleTouchStart);
       btn.removeEventListener("touchend", handleTouchEnd);
@@ -71,7 +70,6 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
       ref={btnRef}
       className="relative inline-flex items-center justify-center py-3.5 px-9 border-[1.5px] border-black rounded-lg bg-white/15 overflow-hidden cursor-pointer touch-manipulation"
     >
-      {/* SVG */}
       <svg
         ref={waveRef}
         aria-hidden="true"
@@ -84,19 +82,17 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
         <path d="M0,0 L112,0 C115,4 120,10 116,20 C112,30 117,36 112,40 L0,40 Z" fill="black" />
       </svg>
 
-      {/* layer 1: base black text */}
       <span className={`${labelClasses} relative z-10 text-black`}>
         {children}
       </span>
 
-      {/* layer 2: inverted white color */}
       <span
         ref={invRef}
         aria-hidden="true"
-        style={{ 
+        style={{
           clipPath: "inset(0% 100% 0% 0%)",
-          transform: "translateZ(0)", // Вынуждает iOS использовать видеокарту для рендеринга clip-path
-          willChange: "clip-path"     // Сообщает браузеру о постоянном изменении маски
+          transform: "translateZ(0)",
+          willChange: "clip-path"
         }}
         className={`${labelClasses} absolute inset-0 flex items-center justify-center z-20 text-white pointer-events-none`}
       >
