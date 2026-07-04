@@ -6,30 +6,22 @@ import type { ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
 import Frame from "./Frame";
 import { TERMINAL_FONT } from "./theme";
+import { scrollToSection, SectionTarget } from "../../lib/scrollNavigation";
 
 const MENU_WIDTH = 3.6;
 const MENU_HEIGHT = 0.36;
 
 interface MenuTarget {
   label: string;
-  // "top" = hero, "bottom" = about; null = section not built yet
-  target: "top" | "bottom" | null;
+  target: SectionTarget;
 }
 
 const ITEMS: MenuTarget[] = [
   { label: "HOME", target: "top" },
-  { label: "ABOUT", target: "bottom" },
-  { label: "SKILLS", target: null },
-  { label: "CONTACT", target: null },
+  { label: "ABOUT", target: "about" },
+  { label: "SKILLS", target: "skills" },
+  { label: "CONTACT", target: "contact" },
 ];
-
-function navigate(item: MenuTarget) {
-  if (item.target === null) return;
-  const top = item.target === "top"
-    ? 0
-    : document.documentElement.scrollHeight - window.innerHeight;
-  window.scrollTo({ top, behavior: "smooth" });
-}
 
 interface MenuItemProps {
   label: string;
@@ -108,7 +100,7 @@ export default function CRTMenu({ position = [0, 0, 0] }: CRTMenuProps) {
           label={item.label}
           x={-MENU_WIDTH / 2 + cellWidth * (i + 0.5)}
           cellWidth={cellWidth}
-          onSelect={() => navigate(item)}
+          onSelect={() => scrollToSection(item.target)}
         />
       ))}
 

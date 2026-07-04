@@ -32,7 +32,12 @@ export default function HeroPage() {
   useStarField(canvasRef, textContainerRef);
 
   return (
-    <div ref={scrollContentRef} className="relative w-full h-[150vh] bg-white">
+    // Runway height = 100vh + TRIGGER_POINT + LOCK_DISTANCE (see
+    // useHeroScrollAnimation). Skills sits in normal flow right after this
+    // runway, so its top edge reaches the viewport bottom exactly when the
+    // About lock ends — that alignment is what makes the About→Skills
+    // hand-off feel like plain browser scrolling.
+    <div ref={scrollContentRef} className="relative w-full h-[calc(100vh+750px)] bg-black">
 
       {/* Fixed hero viewport — stays in place while the page scrolls underneath */}
       <div className="fixed inset-0 w-full overflow-hidden bg-white flex flex-col items-center justify-center select-none touch-pan-y z-10">

@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-07-04
+goal: Establish OpenSpec capability specs matching current implementation before
+  proposing further changes

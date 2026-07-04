@@ -4,22 +4,32 @@ import { Group, MathUtils } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import CRTMenu from "./CRTMenu";
 import BioTerminal from "./BioTerminal";
+import ScrollArrow from "./ScrollArrow";
 
-// Content is authored for a ~3.6-unit-wide layout; the margin keeps it off the warped edges.
+// Content is authored for a ~3.6-unit-wide, ~4.2-unit-tall layout. The scale
+// is clamped by whichever axis is tighter (like object-fit: contain), so on
+// a short/wide desktop window the whole scene shrinks to fit vertically
+// instead of only ever checking width and letting the bio box's fixed
+// world-space size run into the menu.
 const DESIGN_WIDTH = 4.0;
+const DESIGN_HEIGHT = 4.2;
 const MENU_HALF_HEIGHT = 0.18;
 // Fixed viewport-space gap between the menu and the top edge, independent of
 // content scale, so the menu stays pinned near the top on very tall/narrow
 // screens (mobile full-bleed) instead of drifting toward vertical center.
 const TOP_MARGIN = 0.3;
+// Same idea at the bottom, reserved for the scroll-down arrow.
+const BOTTOM_MARGIN = 0.22;
+const ARROW_ZONE_HEIGHT = 0.3;
 
 export default function CRTScene() {
   const groupRef = useRef<Group>(null);
   const menuRef = useRef<Group>(null);
   const bioRef = useRef<Group>(null);
+  const arrowRef = useRef<Group>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const { viewport } = useThree();
-  const scale = Math.min(1, viewport.width / DESIGN_WIDTH);
+  const scale = Math.min(1, viewport.width / DESIGN_WIDTH, viewport.height / DESIGN_HEIGHT);
 
   // Track the pointer across the whole window (not just the canvas),
   // normalized to [-1, 1] like r3f's own pointer.
@@ -54,13 +64,19 @@ export default function CRTScene() {
       menuRef.current.position.y = MathUtils.damp(menuRef.current.position.y, menuLocalY, 6, delta);
     }
 
+    // Arrow is pinned a fixed gap above the viewport's bottom edge.
+    const arrowLocalY = (-viewport.height / 2 + BOTTOM_MARGIN) / scale;
+    if (arrowRef.current) {
+      arrowRef.current.position.y = MathUtils.damp(arrowRef.current.position.y, arrowLocalY, 6, delta);
+    }
+
     // Bio box centers itself in whatever space is left between the menu
-    // and the bottom of the viewport, instead of sitting a fixed gap below
+    // and the arrow's reserved zone, instead of sitting a fixed gap below
     // the menu (which left a lot of dead space on tall/mobile screens).
     if (bioRef.current) {
       const menuBottomWorld = (menuLocalY - MENU_HALF_HEIGHT) * scale;
-      const viewportBottomWorld = -viewport.height / 2;
-      const bioLocalY = (menuBottomWorld + viewportBottomWorld) / 2 / scale;
+      const bioBottomBoundaryWorld = -viewport.height / 2 + BOTTOM_MARGIN + ARROW_ZONE_HEIGHT;
+      const bioLocalY = (menuBottomWorld + bioBottomBoundaryWorld) / 2 / scale;
       bioRef.current.position.y = MathUtils.damp(bioRef.current.position.y, bioLocalY, 6, delta);
     }
   });
@@ -72,6 +88,9 @@ export default function CRTScene() {
       </group>
       <group ref={bioRef}>
         <BioTerminal />
+      </group>
+      <group ref={arrowRef}>
+        <ScrollArrow />
       </group>
     </group>
   );

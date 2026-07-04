@@ -1,20 +1,20 @@
 'use client';
 
 import { Code2, Home, LucideIcon, Mail, User } from "lucide-react";
-import Link from "next/link";
 import WaveButton from "./WaveButton";
+import { scrollToSection, SectionTarget } from "../lib/scrollNavigation";
 
 interface NavItem {
   name: string;
-  href: string;
+  target: SectionTarget;
   icon: LucideIcon;
 }
 
 const navItems: NavItem[] = [
-  { name: 'Home', href: '#home', icon: Home },
-  { name: 'About me', href: '#about', icon: User },
-  { name: 'Skills', href: '#skills', icon: Code2 },
-  { name: 'Contact', href: '#contact', icon: Mail },
+  { name: 'Home', target: 'top', icon: Home },
+  { name: 'About me', target: 'about', icon: User },
+  { name: 'Skills', target: 'skills', icon: Code2 },
+  { name: 'Contact', target: 'contact', icon: Mail },
 ];
 
 export default function NavBar() {
@@ -31,14 +31,15 @@ export default function NavBar() {
             const Icon = item.icon;
 
             return (
-              <Link
+              <button
                 key={item.name}
-                href={item.href}
+                type="button"
+                onClick={() => scrollToSection(item.target)}
                 className="flex items-center gap-2 text-black/70 hover:text-black text-sm font-medium group"
               >
                 <Icon className="w-4 h-4 text-current opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                 <span>{item.name}</span>
-              </Link>
+              </button>
             )
           })}
         </nav>

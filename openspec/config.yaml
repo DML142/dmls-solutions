@@ -1,0 +1,55 @@
+schema: spec-driven
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+context: |
+  Personal portfolio site: a single-page scroll experience with 4 sections, each
+  a distinct visual theme, transitioning elegant/vector -> retro/CRT -> tech/skills
+  -> cosmic/contact. Source of truth for vision/structure/rules is PROJECT.md
+  (referenced by AGENTS.md / CLAUDE.md at the repo root) — keep that file and
+  these specs in sync as decisions are made.
+
+  Tech stack:
+    - Next.js (App Router). IMPORTANT: this repo pins a non-standard/modified
+      Next.js version — consult node_modules/next/dist/docs/ before writing
+      framework code; training-data assumptions about Next.js APIs may be wrong.
+    - TypeScript in strict mode: no `any`, no implicit any, no unchecked casts.
+    - Tailwind CSS for styling.
+    - Three.js + React Three Fiber (r3f) for all 3D/WebGL scenes.
+    - GSAP (ScrollTrigger) for scroll-driven and timeline animations.
+    - lucide-react for icons.
+    - ESLint must pass with zero errors before work is considered done.
+
+  Engineering rules (see PROJECT.md section 4 for the canonical list):
+    - OOP / standard principles: encapsulate logic sensibly (class-based or
+      well-scoped hook/controller patterns for 3D scenes); avoid god-components.
+    - Responsive design is mandatory across mobile/tablet/desktop, including
+      3D canvases and shader effects, not just DOM layout.
+    - Structure & readability: one concern per file/component, clear naming,
+      no premature abstraction.
+    - Consult official docs (Next.js docs in node_modules, Three.js, r3f, GSAP)
+      before implementing anything non-trivial in this stack.
+    - Comments only for non-obvious hard math/logic (shader math, particle
+      physics, easing curves) — never comment obvious code.
+
+  Section status at a glance (kept current in PROJECT.md, not here):
+    1. Home/Hero — elegant vector-graphics style, black cursor-following stars.
+    2. About Me — retro green CRT monitor (shader-warped WebGL screen inside a
+       DOM/Tailwind plastic bezel), in-scene menu, bio terminal, scroll hand-off
+       into Skills via a GSAP-driven raise/lock/release sequence.
+    3. Skills — Next.js/NestJS/Three.js branding, 3D logo models ready, scene
+       composition and scroll-linked animation not yet built.
+    4. Contact — animated 3D black hole scene with contact info overlay; not
+       started.
+
+  When a change here would alter a decision already recorded in PROJECT.md
+  (e.g. the CRT hand-off mechanics, scroll architecture, section order),
+  update PROJECT.md alongside the spec delta so the two never drift apart.
+
+# Per-artifact rules (optional)
+# rules:
+#   proposal:
+#     - Keep proposals under 500 words
+#     - Always include a "Non-goals" section
+#   tasks:
+#     - Break tasks into chunks of max 2 hours
