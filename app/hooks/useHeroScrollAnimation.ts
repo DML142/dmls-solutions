@@ -117,12 +117,16 @@ export function useHeroScrollAnimation({
           gsap.set(aboutRef.current, { yPercent: 0, y: 0 });
           aboutRef.current.style.position = "absolute";
           aboutRef.current.style.top = `${releasePoint}px`;
+          // The navbar tucked away at TRIGGER_POINT; reveal it again (in its
+          // dark theme, handled separately in Navbar.tsx) once Skills starts.
+          gsap.to(".site-navbar", { yPercent: 0, duration: 0.5, ease: "power2.inOut" });
         },
         onLeaveBack: () => {
           if (!aboutRef.current) return;
           aboutRef.current.style.position = "";
           aboutRef.current.style.top = "";
           gsap.set(aboutRef.current, { yPercent: -100 });
+          gsap.to(".site-navbar", { yPercent: -100, duration: 0.5, ease: "power2.inOut" });
         },
       });
     });

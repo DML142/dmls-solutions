@@ -2,7 +2,13 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 
-export default function WaveButton({ children = "CONTACT NOW" }: { children?: string }) {
+interface WaveButtonProps {
+  children?: string;
+  theme?: "light" | "dark";
+}
+
+export default function WaveButton({ children = "CONTACT NOW", theme = "light" }: WaveButtonProps) {
+  const isDark = theme === "dark";
   const btnRef  = useRef<HTMLButtonElement>(null);
   const waveRef = useRef<SVGSVGElement>(null);
   const invRef  = useRef<HTMLSpanElement>(null);
@@ -64,11 +70,16 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
   }, []);
 
   const labelClasses = "text-[13px] font-bold tracking-[0.12em] select-none font-inherit";
+  const waveFill = isDark ? "#ffffff" : "#000000";
+  const borderClass = isDark ? "border-white" : "border-black";
+  const bgClass = isDark ? "bg-black/15" : "bg-white/15";
+  const labelColorClass = isDark ? "text-white" : "text-black";
+  const inverseColorClass = isDark ? "text-black" : "text-white";
 
   return (
     <button
       ref={btnRef}
-      className="relative inline-flex items-center justify-center py-3.5 px-9 border-[1.5px] border-black rounded-lg bg-white/15 overflow-hidden cursor-pointer touch-manipulation"
+      className={`relative inline-flex items-center justify-center py-3.5 px-9 border-[1.5px] ${borderClass} rounded-lg ${bgClass} overflow-hidden cursor-pointer touch-manipulation`}
     >
       <svg
         ref={waveRef}
@@ -79,10 +90,10 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
         viewBox="0 0 130 40"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M0,0 L112,0 C115,4 120,10 116,20 C112,30 117,36 112,40 L0,40 Z" fill="black" />
+        <path d="M0,0 L112,0 C115,4 120,10 116,20 C112,30 117,36 112,40 L0,40 Z" fill={waveFill} />
       </svg>
 
-      <span className={`${labelClasses} relative z-10 text-black`}>
+      <span className={`${labelClasses} relative z-10 ${labelColorClass}`}>
         {children}
       </span>
 
@@ -94,7 +105,7 @@ export default function WaveButton({ children = "CONTACT NOW" }: { children?: st
           transform: "translateZ(0)",
           willChange: "clip-path"
         }}
-        className={`${labelClasses} absolute inset-0 flex items-center justify-center z-20 text-white pointer-events-none`}
+        className={`${labelClasses} absolute inset-0 flex items-center justify-center z-20 ${inverseColorClass} pointer-events-none`}
       >
         {children}
       </span>
