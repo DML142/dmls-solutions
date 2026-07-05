@@ -40,18 +40,31 @@ export default function SkillsGlow({ sectionRef }: SkillsGlowProps) {
     if (!sectionRef.current || !glowRef.current) return;
     const glow = glowRef.current;
 
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 1.4,
-      onUpdate: (self) => {
-        const color = gsap.utils.interpolate(WHITE, NEST_PINK, pinkBlend(self.progress));
+    // See useSkillsScrollProgress: numeric `scrub` only smooths an attached
+    // animation's playhead, not a bare ScrollTrigger's `self.progress` — so
+    // this needs its own tweened proxy value, matching the same 1.1s lag as
+    // the scene, or the glow color would snap ahead of the (now-smoothed)
+    // logo motion.
+    const state = { value: 0 };
+    const tween = gsap.to(state, {
+      value: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.1,
+      },
+      onUpdate: () => {
+        const color = gsap.utils.interpolate(WHITE, NEST_PINK, pinkBlend(state.value));
         glow.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
       },
     });
 
-    return () => trigger.kill();
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   }, [sectionRef]);
 
   return (

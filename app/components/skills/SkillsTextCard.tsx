@@ -9,10 +9,16 @@ export default function SkillsTextCard({ activePhase }: SkillsTextCardProps) {
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6">
-      {/* No backdrop-blur: backdrop-filter ignores the fade wrapper's
-          opacity, so it would pop in at full strength while the card is
-          still transparent. A translucent black fill reads better anyway. */}
-      <div className="w-full max-w-md rounded-2xl border border-white/20 bg-black/60">
+      {/* --card-blur is ramped with the fade in useSkillsScrollProgress so the
+          backdrop blur grows in smoothly with the card (backdrop-filter alone
+          ignores the wrapper's opacity and would pop to full strength). */}
+      <div
+        className="w-full max-w-md rounded-2xl border border-white/20 bg-black/60"
+        style={{
+          backdropFilter: "blur(var(--card-blur, 0px))",
+          WebkitBackdropFilter: "blur(var(--card-blur, 0px))",
+        }}
+      >
         <h3 className="border-b border-white/20 px-6 py-4 text-center text-2xl font-bold tracking-widest text-white">
           {SKILL_TITLES[activePhase]}
         </h3>

@@ -30,27 +30,42 @@ export function useSkillsScrollProgress(
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom bottom",
-      // Numeric scrub adds a catch-up lag so the animation eases toward the
-      // scroll position instead of tracking it 1:1 (reads as an in/out ease
-      // on every wheel notch) without breaking reversibility.
-      scrub: 1.4,
-      onUpdate: (self) => {
-        progressRef.current = self.progress;
-        const { phase, localProgress } = getSkillsPhase(self.progress);
+    // A numeric `scrub` only smooths the playhead of an animation that
+    // ScrollTrigger is driving — reading `self.progress` off a bare
+    // ScrollTrigger (no attached tween) gives the raw, unsmoothed scroll
+    // position instead, per GSAP's own docs. So the "smoothed progress" has
+    // to be an actual tweened value: `state.value` chases the real scroll
+    // position over ~1.1s, and everything below reads that, not raw scroll.
+    const state = { value: 0 };
+    const tween = gsap.to(state, {
+      value: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.1,
+      },
+      onUpdate: () => {
+        progressRef.current = state.value;
+        const { phase, localProgress } = getSkillsPhase(state.value);
         const opacity = getCardOpacity(localProgress);
         if (cardRef.current) {
           cardRef.current.style.opacity = String(opacity);
+          // Ramp the card's backdrop blur with the same fade so it grows in
+          // smoothly instead of popping to full strength (backdrop-filter
+          // otherwise ignores the wrapper's opacity).
+          cardRef.current.style.setProperty("--card-blur", `${(opacity * 10).toFixed(2)}px`);
         }
         const nextActivePhase = opacity > 0 ? phase : null;
         setActivePhase((prev) => (prev === nextActivePhase ? prev : nextActivePhase));
       },
     });
 
-    return () => trigger.kill();
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   }, [sectionRef]);
 
   return { progressRef, activePhase, cardRef };
