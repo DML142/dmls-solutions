@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/Navbar";
+import { ContactPopupProvider } from "./components/ContactPopup";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,8 +22,10 @@ export default function RootLayout({
       className={`${inter.className} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <NavBar />
-        {children}
+        <ContactPopupProvider>
+          <NavBar />
+          {children}
+        </ContactPopupProvider>
       </body>
     </html>
   );

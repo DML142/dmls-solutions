@@ -35,22 +35,17 @@ the WebGL canvas — so it is never affected by the CRT shader.
 The About scene SHALL render its own HOME / ABOUT / SKILLS / CONTACT menu
 inside the WebGL canvas (subject to the same CRT shader as the rest of the
 scene), where hovering a button fills it green from left to right with the
-label switching to black text, and clicking scrolls to the corresponding
-section.
+label switching to black text, and clicking any of the four buttons
+scrolls to its corresponding section.
 
 #### Scenario: Hovering a menu button
 - **WHEN** the pointer hovers over one of the in-scene menu buttons
 - **THEN** that button's background fills with green from left to right and
   its label color switches to black
 
-#### Scenario: Clicking a built section's menu button
-- **WHEN** the user clicks the HOME or ABOUT menu button
+#### Scenario: Clicking any menu button
+- **WHEN** the user clicks the HOME, ABOUT, SKILLS, or CONTACT menu button
 - **THEN** the page scrolls to the corresponding section
-
-#### Scenario: Clicking a not-yet-built section's menu button
-- **WHEN** the user clicks the SKILLS or CONTACT menu button before those
-  sections exist in the scroll flow
-- **THEN** the click has no effect (no navigation, no error)
 
 ### Requirement: Bio content and pointer tilt
 The About scene SHALL display the site owner's bio text inside a bordered

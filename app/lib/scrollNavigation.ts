@@ -11,6 +11,9 @@ export type SectionTarget = "top" | "about" | "skills" | "contact";
 // arbitrary offset can land mid-animation in a broken visual state.
 // Every nav entry point (CRT in-scene menu, DOM navbar) must go through
 // this same geometry-aware scroll instead of native anchor navigation.
+// Note: the navbar's "CONTACT NOW" wave button does NOT use this — it
+// opens the global contact popup instead (see ContactPopup.tsx). Only the
+// plain Contact link/menu item scrolls here.
 export function scrollToSection(target: SectionTarget) {
   let scrollTo: number | Element;
 

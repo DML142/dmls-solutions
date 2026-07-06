@@ -5,9 +5,10 @@ import gsap from "gsap";
 interface WaveButtonProps {
   children?: string;
   theme?: "light" | "dark";
+  onClick?: () => void;
 }
 
-export default function WaveButton({ children = "CONTACT NOW", theme = "light" }: WaveButtonProps) {
+export default function WaveButton({ children = "CONTACT NOW", theme = "light", onClick }: WaveButtonProps) {
   const isDark = theme === "dark";
   const btnRef  = useRef<HTMLButtonElement>(null);
   const waveRef = useRef<SVGSVGElement>(null);
@@ -79,6 +80,7 @@ export default function WaveButton({ children = "CONTACT NOW", theme = "light" }
   return (
     <button
       ref={btnRef}
+      onClick={onClick}
       className={`relative inline-flex items-center justify-center py-3.5 px-9 border-[1.5px] ${borderClass} rounded-lg ${bgClass} overflow-hidden cursor-pointer touch-manipulation`}
     >
       <svg

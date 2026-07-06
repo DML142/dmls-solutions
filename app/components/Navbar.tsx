@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WaveButton from "./WaveButton";
 import { scrollToSection, SectionTarget } from "../lib/scrollNavigation";
 import { TRIGGER_POINT, LOCK_DISTANCE } from "../hooks/useHeroScrollAnimation";
+import { useContactPopup } from "./ContactPopup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,6 +33,7 @@ interface NavBarProps {
 export default function NavBar({ theme }: NavBarProps) {
   const navRef = useRef<HTMLElement>(null);
   const [autoTheme, setAutoTheme] = useState<"light" | "dark">("light");
+  const { open: openContactPopup } = useContactPopup();
 
   useEffect(() => {
     const releasePoint = TRIGGER_POINT + LOCK_DISTANCE;
@@ -118,7 +120,7 @@ export default function NavBar({ theme }: NavBarProps) {
           })}
         </nav>
 
-        <WaveButton theme={activeTheme} />
+        <WaveButton theme={activeTheme} onClick={openContactPopup} />
       </div>
     </nav>
   )
