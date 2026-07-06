@@ -125,10 +125,15 @@ being a plain `min-h-screen` section with no special height formula, has
 no fixed-pixel document offset to hang a numeric `ScrollTrigger` on.
 Instead, `Navbar.tsx` adds a third `ScrollTrigger` keyed to the Contact
 section's own DOM element (`document.getElementById("contact-section")`,
-`start: "top top"`), hiding the navbar via `onEnter` and reversing via
+`start: "top 25%"`), hiding the navbar via `onEnter` and reversing via
 `onLeaveBack` — mirroring how Skills' own `id="skills-section"` lookup
 works in `scrollNavigation.ts`, just applied to visibility instead of
-scroll-jump targeting.
+scroll-jump targeting. `"top top"` was the original plan but is unusable
+here: Contact is the final 100vh section, so its top reaches the viewport
+top only at the document's absolute maximum scroll position — the trigger
+would fire on the very last pixel or not at all. Firing when the section's
+top crosses 25% of the viewport ("section dominates the screen") is robust
+and reads naturally.
 
 **Alternative considered**: computing Contact's document offset in JS and
 reusing the existing numeric-`ScrollTrigger` pattern. Rejected — the

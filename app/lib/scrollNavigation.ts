@@ -26,8 +26,9 @@ export function scrollToSection(target: SectionTarget) {
     if (!skillsEl) return;
     scrollTo = skillsEl;
   } else {
-    // Contact section doesn't exist yet.
-    return;
+    const contactEl = document.getElementById("contact-section");
+    if (!contactEl) return;
+    scrollTo = contactEl;
   }
 
   gsap.to(window, {

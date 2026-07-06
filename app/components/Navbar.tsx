@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Code2, Home, LucideIcon, Mail, User } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -30,6 +30,7 @@ interface NavBarProps {
 }
 
 export default function NavBar({ theme }: NavBarProps) {
+  const navRef = useRef<HTMLElement>(null);
   const [autoTheme, setAutoTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
@@ -49,9 +50,33 @@ export default function NavBar({ theme }: NavBarProps) {
       end: TRIGGER_POINT,
       onLeaveBack: () => setAutoTheme("light"),
     });
+    // Third visibility zone: hidden again for the whole Contact section.
+    // Keyed to the section's DOM element rather than a pixel constant —
+    // Contact has no fixed-height formula like the Hero runway or Skills,
+    // so its document offset is only knowable from layout. Contact is the
+    // final 100vh section, so its top reaches the viewport top only at the
+    // document's absolute maximum scroll — "top top" would fire on the very
+    // last pixel or never; "top 25%" fires once the section dominates the
+    // viewport instead. overwrite:"auto" kills any still-running show/hide
+    // tween from the Skills release trigger so the two never fight over
+    // yPercent.
+    const contactEl = document.getElementById("contact-section");
+    const contactTrigger = contactEl
+      ? ScrollTrigger.create({
+          trigger: contactEl,
+          start: "top 25%",
+          onEnter: () => {
+            gsap.to(navRef.current, { yPercent: -100, duration: 0.5, ease: "power2.inOut", overwrite: "auto" });
+          },
+          onLeaveBack: () => {
+            gsap.to(navRef.current, { yPercent: 0, duration: 0.5, ease: "power2.inOut", overwrite: "auto" });
+          },
+        })
+      : null;
     return () => {
       darkTrigger.kill();
       lightTrigger.kill();
+      contactTrigger?.kill();
     };
   }, []);
 
@@ -60,6 +85,7 @@ export default function NavBar({ theme }: NavBarProps) {
 
   return (
     <nav
+      ref={navRef}
       // No color transition: theme swaps happen while the navbar is
       // off-screen, and animating them made the swap visible mid-slide.
       className={`site-navbar fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b ${

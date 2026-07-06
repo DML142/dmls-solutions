@@ -51,9 +51,12 @@ A personal portfolio site built as a single-page scroll experience, divided into
 - Status: **in progress** (scroll showcase built; exact scroll-distance/timing feel and per-logo description copy still tunable).
 
 ### 3.4 Contact
-- Full 3D scene: an **animated black hole**.
-- Minimal text overlay with contact info/links.
-- Status: **not started**.
+- Full 3D scene: an **animated black hole** (`Contact.tsx`, `contact/BlackHoleScene.tsx`).
+- **Fake-lensing composition (decided)**: no true gravitational ray-marching. Three pieces sell the reference look cheaply — an opaque black event-horizon sphere, a mostly-edge-on turbulent accretion disk, and a second near-face-on halo ring hugging the sphere's silhouette (reads as light wrapping over the poles). Both rings share one additive-blended `ShaderMaterial` (`effects/AccretionDiskMaterial.ts`, `shaders/accretionDiskShader.ts`): radial white-hot→amber gradient, fixed one-sided brightness (relativistic-beaming look), and sine-sum streaks (seam-free in theta, unlike value noise) with differential rotation via a `uTime` uniform. Continuously clock-driven via `useFrame` — no scroll wiring at all. `Bloom` tuned brighter than Skills'.
+- **Contact card**: one static card (`contact/ContactCard.tsx`) reusing Skills' card visual language (rounded, `bg-black/60`, title + divider) but with zero animation plumbing. "CONTACT" title; LinkedIn / Telegram (`t.me/volnowan`) / Gmail (`mailto:`) as blue underlined links, external ones with `target="_blank" rel="noopener noreferrer"`.
+- **Navbar hides at Contact**: third visibility zone in `Navbar.tsx`, keyed to the `#contact-section` DOM element with `start: "top 25%"` — NOT `"top top"`, because Contact is the final 100vh section so its top only reaches the viewport top at the document's absolute maximum scroll (the trigger would fire on the last pixel or never).
+- **Nav "Contact" controls stay no-ops** (navbar item + CRT menu button): slated to open a popup later, so `scrollToSection`'s `"contact"` branch intentionally remains unwired.
+- Status: **in progress** (scene + card + navbar zone built; visual tuning and the contact popup remain).
 
 ## 4. Engineering Rules
 

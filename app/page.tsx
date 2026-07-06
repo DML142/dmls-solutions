@@ -1,5 +1,7 @@
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50">
       <Hero />
       <Skills />
+      <Contact />
+      <Footer />
     </main>
   );
 }
